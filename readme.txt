@@ -12,7 +12,7 @@ Este repositorio contiene la implementación del **Módulo Multitenant** orienta
 
 Se implementaron las piezas claves:
 
-* Modelo `Clinic` (tenant).
+* Modelos `Clinic` (tenant).
 * Extensión del modelo de usuario (`User`) con campo `tenant` y manager personalizado para forzar la creación con tenant.
 * Mixin reusable `TenantAdminMixin` que restringe listas, formularios, FKs, inlines y permisos en el Django Admin.
 * Adaptaciones en `admin.py` para `Cliente`, `Producto`, `Cita` (ejemplos) usando el mixin.
