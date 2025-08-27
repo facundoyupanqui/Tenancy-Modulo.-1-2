@@ -222,8 +222,6 @@ FLUSH PRIVILEGES;
 
 ---
 
-## Contacto
-Si necesitás que genere el archivo `README.md` para descargar o que adapte ejemplos para nombres reales de tus apps/modelos, decímelo y lo genero listo para pegar en el repo.
 
 ---
 
