@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import django 
 
 from pathlib import Path
 
@@ -76,8 +77,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'modulo1y2',   # el nombre que creaste en MySQL
-        'USER': 'root',        # tu usuario de MySQL
-        'PASSWORD': 'root1234*',  # pon tu contraseña aquí
+        'USER': 'alee',        # tu usuario de MySQL
+        'PASSWORD': '1234',  # pon tu contraseña aquí
         'HOST': '127.0.0.1',   # localhost
         'PORT': '3306',
     }
