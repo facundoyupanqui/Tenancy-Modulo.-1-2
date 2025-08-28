@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Aplicaciones personalizadas
+    'productos',
+    'clientes',
+    'auth_views',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +60,7 @@ ROOT_URLCONF = 'multi_tenant_modulo1y2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'modulo1y2',   # el nombre que creaste en MySQL
-        'USER': 'alee',        # tu usuario de MySQL
-        'PASSWORD': '1234',  # pon tu contraseña aquí
+        'USER': 'root',        # tu usuario de MySQL
+        'PASSWORD': 'PiCa1985',  # pon tu contraseña aquí
         'HOST': '127.0.0.1',   # localhost
         'PORT': '3306',
     }
@@ -118,9 +123,17 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Media files
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
