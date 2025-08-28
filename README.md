@@ -2,9 +2,7 @@
 
 > **Proyecto:** Sistema Django multitenant para gestión de clínicas (Módulos 1 y 2)
 >
-> **Última actualización:** 27 de agosto de 2025
 >
-> **Resumen / Presentación**
 >
 > Este proyecto contiene el scaffold y las implementaciones iniciales para un sistema **multitenant** pensado para clínicas. Está diseñado para que cada *tenant* represente una clínica y para que todos los recursos (usuarios, pacientes, citas, productos, etc.) queden **aislados por tenant**.
 >
