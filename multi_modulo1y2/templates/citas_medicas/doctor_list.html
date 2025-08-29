@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Doctores Disponibles - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-user-md me-2"></i>Doctores Disponibles
+                </h1>
+                <a href="{% url 'citas_medicas:cita_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Nueva Cita
+                </a>
+            </div>
+
+            {% if doctores %}
+            <!-- Doctores agrupados por especialidad -->
+            {% for especialidad, doctores_esp in doctores_por_especialidad.items %}
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-stethoscope me-2"></i>{{ especialidad }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for doctor in doctores_esp %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-header text-center bg-light">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-user-md me-2"></i>Dr. {{ doctor.nombre }} {{ doctor.apellido }}
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <i class="fas fa-user-md fa-3x text-primary"></i>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <strong><i class="fas fa-envelope me-2"></i>Email:</strong><br>
+                                        <small class="text-muted">{{ doctor.email }}</small>
+                                    </div>
+                                    
+                                    {% if doctor.telefono %}
+                                    <div class="mb-3">
+                                        <strong><i class="fas fa-phone me-2"></i>Teléfono:</strong><br>
+                                        <small class="text-muted">{{ doctor.telefono }}</small>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="mb-3">
+                                        <strong><i class="fas fa-clock me-2"></i>Horario:</strong><br>
+                                        <small class="text-muted">
+                                            {{ doctor.horario_inicio|time:"H:i" }} - {{ doctor.horario_fin|time:"H:i" }}
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <strong><i class="fas fa-calendar me-2"></i>Días Laborales:</strong><br>
+                                        <small class="text-muted">{{ doctor.dias_laborales }}</small>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="{% url 'citas_medicas:doctor_detail' doctor.pk %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Ver Detalles
+                                    </a>
+                                    <a href="{% url 'citas_medicas:cita_create' %}?doctor={{ doctor.pk }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-calendar-plus me-1"></i>Agendar Cita
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-user-md fa-4x text-muted"></i>
+                </div>
+                <h3 class="text-muted">No hay doctores disponibles</h3>
+                <p class="text-muted">Contacta con la administración de la clínica</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

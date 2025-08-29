@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Mis Citas - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-calendar-check me-2"></i>Mis Citas
+                </h1>
+                <a href="{% url 'citas_medicas:cita_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Nueva Cita
+                </a>
+            </div>
+
+            <!-- Formulario de búsqueda -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search me-2"></i>Buscar Citas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-3">
+                            {{ search_form.fecha_desde.label_tag }}
+                            {{ search_form.fecha_desde }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ search_form.fecha_hasta.label_tag }}
+                            {{ search_form.fecha_hasta }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ search_form.doctor.label_tag }}
+                            {{ search_form.doctor }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ search_form.estado.label_tag }}
+                            {{ search_form.estado }}
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-search me-2"></i>Buscar
+                            </button>
+                            <a href="{% url 'citas_medicas:cita_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Limpiar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if citas %}
+            <!-- Citas agrupadas por fecha -->
+            {% for fecha_str, citas_fecha in citas_por_fecha.items %}
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar me-2"></i>
+                        {{ fecha_str|date:"l, d/m/Y" }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for cita in citas_fecha %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 border-{% if cita.estado == 'programada' %}primary{% elif cita.estado == 'confirmada' %}success{% elif cita.estado == 'completada' %}secondary{% elif cita.estado == 'cancelada' %}danger{% else %}warning{% endif %}">
+                                <div class="card-header text-center">
+                                    <span class="badge bg-{% if cita.estado == 'programada' %}primary{% elif cita.estado == 'confirmada' %}success{% elif cita.estado == 'completada' %}secondary{% elif cita.estado == 'cancelada' %}danger{% else %}warning{% endif %} fs-6">
+                                        {{ cita.get_estado_display }}
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <i class="fas fa-clock me-2"></i>{{ cita.hora|time:"H:i" }}
+                                    </h6>
+                                    <p class="card-text">
+                                        <strong>Doctor:</strong><br>
+                                        Dr. {{ cita.doctor.nombre }} {{ cita.doctor.apellido }}<br>
+                                        <small class="text-muted">{{ cita.doctor.especialidad.nombre }}</small>
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Tipo:</strong> {{ cita.get_tipo_display }}<br>
+                                        <strong>Motivo:</strong> {{ cita.motivo|truncatechars:50 }}
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex gap-2">
+                                        <a href="{% url 'citas_medicas:cita_detail' cita.pk %}" class="btn btn-outline-primary btn-sm flex-fill">
+                                            <i class="fas fa-eye me-1"></i>Ver
+                                        </a>
+                                        {% if cita.estado in 'programada,confirmada' %}
+                                        <a href="{% url 'citas_medicas:cita_update' cita.pk %}" class="btn btn-outline-warning btn-sm flex-fill">
+                                            <i class="fas fa-edit me-1"></i>Editar
+                                        </a>
+                                        <a href="{% url 'citas_medicas:cita_cancel' cita.pk %}" class="btn btn-outline-danger btn-sm flex-fill">
+                                            <i class="fas fa-times me-1"></i>Cancelar
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-calendar-times fa-4x text-muted"></i>
+                </div>
+                <h3 class="text-muted">No tienes citas programadas</h3>
+                <p class="text-muted">Programa tu primera cita médica</p>
+                <a href="{% url 'citas_medicas:cita_create' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Programar Cita
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Mi Perfil - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-user-circle me-2"></i>Mi Perfil
+                        </h3>
+                        <a href="{% url 'users:profile_edit' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-edit me-1"></i>Editar Perfil
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Información Personal -->
+                            <div class="mb-4">
+                                <h5 class="text-muted mb-3">
+                                    <i class="fas fa-id-card me-2"></i>Información Personal
+                                </h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p><strong>Nombre:</strong></p>
+                                        <p class="fw-bold">{{ user.first_name }}</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><strong>Apellido:</strong></p>
+                                        <p class="fw-bold">{{ user.last_name }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p><strong>Usuario:</strong></p>
+                                        <p class="fw-bold">{{ user.username }}</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><strong>Email:</strong></p>
+                                        <p class="fw-bold">{{ user.email }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Información de Contacto -->
+                            <div class="mb-4">
+                                <h5 class="text-muted mb-3">
+                                    <i class="fas fa-address-book me-2"></i>Información de Contacto
+                                </h5>
+                                {% if user.telefono %}
+                                <div class="mb-3">
+                                    <p><strong>Teléfono:</strong></p>
+                                    <p class="fw-bold">
+                                        <i class="fas fa-phone me-2 text-success"></i>
+                                        {{ user.telefono }}
+                                    </p>
+                                </div>
+                                {% endif %}
+                                
+                                {% if user.direccion %}
+                                <div class="mb-3">
+                                    <p><strong>Dirección:</strong></p>
+                                    <p class="fw-bold">
+                                        <i class="fas fa-map-marker-alt me-2 text-info"></i>
+                                        {{ user.direccion }}
+                                    </p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Información Médica -->
+                            <div class="mb-4">
+                                <h5 class="text-muted mb-3">
+                                    <i class="fas fa-heartbeat me-2"></i>Información Médica
+                                </h5>
+                                {% if user.fecha_nacimiento %}
+                                <div class="mb-3">
+                                    <p><strong>Fecha de Nacimiento:</strong></p>
+                                    <p class="fw-bold">
+                                        <i class="fas fa-birthday-cake me-2 text-warning"></i>
+                                        {{ user.fecha_nacimiento|date:"d/m/Y" }}
+                                        {% if user.edad %}
+                                        <span class="badge bg-secondary ms-2">{{ user.edad }} años</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                {% endif %}
+                                
+                                {% if user.tipo_sangre %}
+                                <div class="mb-3">
+                                    <p><strong>Tipo de Sangre:</strong></p>
+                                    <p class="fw-bold">
+                                        <i class="fas fa-tint me-2 text-danger"></i>
+                                        {{ user.tipo_sangre }}
+                                    </p>
+                                </div>
+                                {% endif %}
+                                
+                                {% if user.alergias %}
+                                <div class="mb-3">
+                                    <p><strong>Alergias:</strong></p>
+                                    <p class="fw-bold">{{ user.alergias }}</p>
+                                </div>
+                                {% endif %}
+                                
+                                {% if user.condiciones_medicas %}
+                                <div class="mb-3">
+                                    <p><strong>Condiciones Médicas:</strong></p>
+                                    <p class="fw-bold">{{ user.condiciones_medicas }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-user-circle fa-4x text-primary"></i>
+                                    </div>
+                                    <h6 class="text-muted">Clínica</h6>
+                                    <span class="badge bg-primary fs-6">{{ user.tenant.name }}</span>
+                                    
+                                    <hr>
+                                    
+                                    <h6 class="text-muted">Estado de la Cuenta</h6>
+                                    {% if user.is_active %}
+                                        <span class="badge bg-success fs-6">Activa</span>
+                                    {% else %}
+                                        <span class="badge bg-danger fs-6">Inactiva</span>
+                                    {% endif %}
+                                    
+                                    <hr>
+                                    
+                                    <h6 class="text-muted">Miembro desde</h6>
+                                    <small class="text-muted">{{ user.date_joined|date:"M Y" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'productos:producto_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+                        </a>
+                        <a href="{% url 'users:profile_edit' %}" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>Editar Perfil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

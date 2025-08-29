@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ producto.nombre }} - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-box me-2"></i>{{ producto.nombre }}
+                        </h3>
+                        <div class="btn-group">
+                            <a href="{% url 'productos:producto_update' producto.pk %}" class="btn btn-light btn-sm">
+                                <i class="fas fa-edit me-1"></i>Editar
+                            </a>
+                            <a href="{% url 'productos:producto_delete' producto.pk %}" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-trash me-1"></i>Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="text-muted mb-3">Descripción</h5>
+                            <p class="mb-4">{{ producto.descripcion|linebreaks }}</p>
+                            
+                            <h5 class="text-muted mb-3">Información del Producto</h5>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><strong>Precio:</strong></p>
+                                    <p class="text-success fw-bold fs-4">${{ producto.precio }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Stock:</strong></p>
+                                    <p class="fw-bold fs-4 {% if producto.stock < 10 %}text-danger{% elif producto.stock < 50 %}text-warning{% else %}text-success{% endif %}">
+                                        {{ producto.stock }} unidades
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            {% if producto.categoria %}
+                            <div class="mb-3">
+                                <strong>Categoría:</strong>
+                                <span class="badge bg-secondary">{{ producto.categoria }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-box fa-4x text-primary"></i>
+                                    </div>
+                                    <h6 class="text-muted">Estado del Stock</h6>
+                                    {% if producto.stock < 10 %}
+                                        <span class="badge bg-danger fs-6">Stock Bajo</span>
+                                    {% elif producto.stock < 50 %}
+                                        <span class="badge bg-warning fs-6">Stock Medio</span>
+                                    {% else %}
+                                        <span class="badge bg-success fs-6">Stock Alto</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'productos:producto_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a Productos
+                        </a>
+                        <div>
+                            <a href="{% url 'productos:producto_update' producto.pk %}" class="btn btn-warning me-2">
+                                <i class="fas fa-edit me-2"></i>Editar Producto
+                            </a>
+                            <a href="{% url 'productos:producto_create' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Nuevo Producto
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Editar Perfil - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Editar Perfil
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Información Personal -->
+                        <h5 class="text-muted mb-3">
+                            <i class="fas fa-id-card me-2"></i>Información Personal
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-user me-2"></i>Nombre
+                                </label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.first_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-user me-2"></i>Apellido
+                                </label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.last_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-envelope me-2"></i>Email
+                                </label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.telefono.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-phone me-2"></i>Teléfono
+                                </label>
+                                {{ form.telefono }}
+                                {% if form.telefono.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.telefono.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Dirección -->
+                        <div class="mb-3">
+                            <label for="{{ form.direccion.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-map-marker-alt me-2"></i>Dirección
+                            </label>
+                            {{ form.direccion }}
+                            {% if form.direccion.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.direccion.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Información Médica -->
+                        <h5 class="text-muted mb-3 mt-4">
+                            <i class="fas fa-heartbeat me-2"></i>Información Médica
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-birthday-cake me-2"></i>Fecha de Nacimiento
+                                </label>
+                                {{ form.fecha_nacimiento }}
+                                {% if form.fecha_nacimiento.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.fecha_nacimiento.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.tipo_sangre.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-tint me-2"></i>Tipo de Sangre
+                                </label>
+                                {{ form.tipo_sangre }}
+                                {% if form.tipo_sangre.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.tipo_sangre.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Alergias y Condiciones -->
+                        <div class="mb-3">
+                            <label for="{{ form.alergias.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Alergias
+                            </label>
+                            {{ form.alergias }}
+                            {% if form.alergias.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.alergias.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.condiciones_medicas.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-stethoscope me-2"></i>Condiciones Médicas
+                            </label>
+                            {{ form.condiciones_medicas }}
+                            {% if form.condiciones_medicas.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.condiciones_medicas.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Validación del formulario
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>
+{% endblock %}

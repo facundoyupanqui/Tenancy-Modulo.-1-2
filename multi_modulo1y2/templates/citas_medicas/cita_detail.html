@@ -1,0 +1,187 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detalle de Cita - {{ user.tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Información Principal de la Cita -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>Cita Médica
+                        </h3>
+                        <span class="badge bg-{% if cita.estado == 'programada' %}primary{% elif cita.estado == 'confirmada' %}success{% elif cita.estado == 'completada' %}secondary{% elif cita.estado == 'cancelada' %}danger{% else %}warning{% endif %} fs-6">
+                            {{ cita.get_estado_display }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-calendar me-2"></i>Información de la Cita
+                            </h5>
+                            <p><strong>Fecha:</strong><br>
+                            <span class="text-muted">{{ cita.fecha|date:"l, d/m/Y" }}</span></p>
+                            
+                            <p><strong>Hora:</strong><br>
+                            <span class="text-muted">{{ cita.hora|time:"H:i" }}</span></p>
+                            
+                            <p><strong>Tipo:</strong><br>
+                            <span class="text-muted">{{ cita.get_tipo_display }}</span></p>
+                            
+                            <p><strong>Duración Estimada:</strong><br>
+                            <span class="text-muted">{{ cita.duracion_estimada }} minutos</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-user-md me-2"></i>Información del Doctor
+                            </h5>
+                            <p><strong>Doctor:</strong><br>
+                            <span class="text-muted">Dr. {{ cita.doctor.nombre }} {{ cita.doctor.apellido }}</span></p>
+                            
+                            <p><strong>Especialidad:</strong><br>
+                            <span class="text-muted">{{ cita.doctor.especialidad.nombre }}</span></p>
+                            
+                            <p><strong>Email:</strong><br>
+                            <span class="text-muted">{{ cita.doctor.email }}</span></p>
+                            
+                            {% if cita.doctor.telefono %}
+                            <p><strong>Teléfono:</strong><br>
+                            <span class="text-muted">{{ cita.doctor.telefono }}</span></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-comment-medical me-2"></i>Motivo de la Cita
+                            </h5>
+                            <p class="text-muted">{{ cita.motivo }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if cita.sintomas %}
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-thermometer-half me-2"></i>Síntomas
+                            </h5>
+                            <p class="text-muted">{{ cita.sintomas }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Información Médica (si está disponible) -->
+            {% if cita.diagnostico or cita.tratamiento or cita.notas_medico %}
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-notes-medical me-2"></i>Información Médica
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if cita.diagnostico %}
+                    <div class="mb-3">
+                        <h6 class="text-success">Diagnóstico:</h6>
+                        <p class="text-muted">{{ cita.diagnostico }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if cita.tratamiento %}
+                    <div class="mb-3">
+                        <h6 class="text-success">Tratamiento:</h6>
+                        <p class="text-muted">{{ cita.tratamiento }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if cita.notas_medico %}
+                    <div class="mb-3">
+                        <h6 class="text-success">Notas del Médico:</h6>
+                        <p class="text-muted">{{ cita.notas_medico }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if cita.proxima_cita %}
+                    <div class="mb-3">
+                        <h6 class="text-success">Próxima Cita:</h6>
+                        <p class="text-muted">{{ cita.proxima_cita|date:"l, d/m/Y" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4">
+            <!-- Acciones -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs me-2"></i>Acciones
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        {% if cita.estado in 'programada,confirmada' %}
+                        <a href="{% url 'citas_medicas:cita_update' cita.pk %}" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>Editar Cita
+                        </a>
+                        <a href="{% url 'citas_medicas:cita_cancel' cita.pk %}" class="btn btn-danger">
+                            <i class="fas fa-times me-2"></i>Cancelar Cita
+                        </a>
+                        {% endif %}
+                        
+                        <a href="{% url 'citas_medicas:cita_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a Mis Citas
+                        </a>
+                        
+                        <a href="{% url 'citas_medicas:cita_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Nueva Cita
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Información Adicional -->
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Información Importante
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-clock text-primary me-2"></i>
+                            <small>Llega 10 minutos antes de tu cita</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-id-card text-info me-2"></i>
+                            <small>Lleva tu identificación</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone text-success me-2"></i>
+                            <small>Confirma tu cita 24h antes</small>
+                        </li>
+                        {% if cita.estado in 'programada,confirmada' %}
+                        <li class="mb-2">
+                            <i class="fas fa-calendar-times text-warning me-2"></i>
+                            <small>Puedes cancelar hasta 24h antes</small>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

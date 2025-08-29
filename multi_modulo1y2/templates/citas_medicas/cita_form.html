@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+{% if form.instance.pk %}Editar Cita{% else %}Nueva Cita{% endif %} - {{ user.tenant.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header {% if form.instance.pk %}bg-warning{% else %}bg-primary{% endif %} text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-{% if form.instance.pk %}edit{% else %}plus{% endif %} me-2"></i>
+                        {% if form.instance.pk %}Editar Cita{% else %}Nueva Cita{% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <!-- Doctor -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.doctor.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-user-md me-2"></i>Doctor
+                                </label>
+                                {{ form.doctor }}
+                                {% if form.doctor.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.doctor.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if form.doctor.help_text %}
+                                    <small class="form-text text-muted">{{ form.doctor.help_text }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Tipo de Cita -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.tipo.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-stethoscope me-2"></i>Tipo de Cita
+                                </label>
+                                {{ form.tipo }}
+                                {% if form.tipo.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.tipo.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if form.tipo.help_text %}
+                                    <small class="form-text text-muted">{{ form.tipo.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Fecha -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.fecha.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-calendar me-2"></i>Fecha
+                                </label>
+                                {{ form.fecha }}
+                                {% if form.fecha.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.fecha.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if form.fecha.help_text %}
+                                    <small class="form-text text-muted">{{ form.fecha.help_text }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Hora -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.hora.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-clock me-2"></i>Hora
+                                </label>
+                                {{ form.hora }}
+                                {% if form.hora.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.hora.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if form.hora.help_text %}
+                                    <small class="form-text text-muted">{{ form.hora.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Motivo -->
+                        <div class="mb-3">
+                            <label for="{{ form.motivo.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-comment-medical me-2"></i>Motivo de la Cita
+                            </label>
+                            {{ form.motivo }}
+                            {% if form.motivo.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.motivo.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if form.motivo.help_text %}
+                                <small class="form-text text-muted">{{ form.motivo.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Síntomas -->
+                        <div class="mb-4">
+                            <label for="{{ form.sintomas.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-thermometer-half me-2"></i>Síntomas
+                            </label>
+                            {{ form.sintomas }}
+                            {% if form.sintomas.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.sintomas.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if form.sintomas.help_text %}
+                                <small class="form-text text-muted">{{ form.sintomas.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'citas_medicas:cita_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn {% if form.instance.pk %}btn-warning{% else %}btn-primary{% endif %}">
+                                <i class="fas fa-{% if form.instance.pk %}save{% else %}plus{% endif %} me-2"></i>
+                                {% if form.instance.pk %}Guardar Cambios{% else %}Programar Cita{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Información adicional -->
+            {% if doctores %}
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Doctores Disponibles
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for doctor in doctores %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        Dr. {{ doctor.nombre }} {{ doctor.apellido }}
+                                    </h6>
+                                    <p class="card-text">
+                                        <strong>Especialidad:</strong> {{ doctor.especialidad.nombre }}<br>
+                                        <strong>Horario:</strong> {{ doctor.horario_inicio|time:"H:i" }} - {{ doctor.horario_fin|time:"H:i" }}<br>
+                                        <strong>Días:</strong> {{ doctor.dias_laborales }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Validación del formulario
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Actualizar horarios disponibles cuando se selecciona un doctor
+document.addEventListener('DOMContentLoaded', function() {
+    const doctorSelect = document.getElementById('{{ form.doctor.id_for_label }}');
+    const horaInput = document.getElementById('{{ form.hora.id_for_label }}');
+    
+    if (doctorSelect && horaInput) {
+        doctorSelect.addEventListener('change', function() {
+            // Aquí podrías hacer una llamada AJAX para obtener horarios disponibles
+            // Por ahora, solo limpiamos el campo hora
+            horaInput.value = '';
+        });
+    }
+});
+</script>
+{% endblock %}

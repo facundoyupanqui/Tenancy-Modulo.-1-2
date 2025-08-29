@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Error - No Tenant Asignado{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Error de Acceso</h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-exclamation-triangle fa-4x text-danger"></i>
+                </div>
+                <h5 class="card-title text-center">No tienes una clínica asignada</h5>
+                <p class="card-text text-center">
+                    Tu cuenta de usuario no tiene una clínica asignada o la clínica a la que perteneces ya no está activa.
+                    Por favor, contacta al administrador del sistema para resolver este problema.
+                </p>
+                <div class="text-center mt-4">
+                    <a href="{% url 'logout' %}" class="btn btn-primary">Volver al inicio de sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

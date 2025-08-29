@@ -1,0 +1,22 @@
+# Entornos virtuales
+venv/
+.venv/
+
+# Archivos de base de datos SQLite
+*.sqlite3
+
+# Archivos de caché y migraciones
+__pycache__/
+*.py[cod]
+*.log
+*.pot
+*.pyc
+db.sqlite3
+migrations/
+
+# Configuración local
+.env
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
