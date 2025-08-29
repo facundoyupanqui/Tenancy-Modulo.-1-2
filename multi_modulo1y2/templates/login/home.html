@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Bienvenido - Sistema Multitenancy{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row bg-primary text-white py-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-hospital me-3"></i>
+                Sistema Multi-Tenant
+            </h1>
+            <p class="lead mb-4">Gestión integral para clínicas y centros médicos</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'auth:login' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                </a>
+                <a href="{% url 'auth:register' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Registrarse
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row py-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-5 fw-bold">Características Principales</h2>
+            <p class="lead text-muted">Descubre lo que nuestro sistema puede hacer por tu clínica</p>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="card-title">Aislamiento de Datos</h4>
+                    <p class="card-text">Cada clínica mantiene sus datos completamente separados y seguros.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-users fa-2x text-success"></i>
+                    </div>
+                    <h4 class="card-title">Gestión de Usuarios</h4>
+                    <p class="card-text">Control total sobre usuarios, roles y permisos dentro de cada clínica.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x text-info"></i>
+                    </div>
+                    <h4 class="card-title">Reportes y Analytics</h4>
+                    <p class="card-text">Análisis detallado de productos, clientes y operaciones.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clinics Section -->
+    <div class="row py-5 bg-light">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-5 fw-bold">Clínicas Disponibles</h2>
+            <p class="lead text-muted">Únete a una de nuestras clínicas asociadas</p>
+        </div>
+        
+        {% for tenant in tenants %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-clinic-medical fa-lg text-primary"></i>
+                    </div>
+                    <h5 class="card-title">{{ tenant.name }}</h5>
+                    <p class="card-text text-muted">{{ tenant.address }}</p>
+                    <p class="card-text">
+                        <i class="fas fa-phone me-2"></i>{{ tenant.phone_number }}
+                    </p>
+                    <a href="{% url 'auth:register' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-2"></i>Unirse
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- CTA Section -->
+    <div class="row py-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 fw-bold mb-4">¿Listo para comenzar?</h2>
+            <p class="lead mb-4">Únete a nuestro sistema y transforma la gestión de tu clínica</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'auth:register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Comenzar Ahora
+                </a>
+                <a href="{% url 'auth:login' %}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Acceder
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-opacity-10 {
+    background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
+}
+
+.bg-opacity-10.bg-success {
+    background-color: rgba(var(--bs-success-rgb), 0.1) !important;
+}
+
+.bg-opacity-10.bg-info {
+    background-color: rgba(var(--bs-info-rgb), 0.1) !important;
+}
+</style>
+{% endblock %}

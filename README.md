@@ -1,6 +1,6 @@
 # Tenancy Módulo 1 y 2
 
-Proyecto Django multi-tenant con base de datos MySQL.
+Proyecto Django multi-tenant con base de datos MySQL. Sistema modular para gestión de productos y clientes con aislamiento por tenant.
 
 ## 🚀 Instalación y Configuración
 
@@ -24,18 +24,25 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Configurar la base de datos MySQL
+### 4. Base de datos MySQL
 
-- Crea la base de datos en MySQL:
-  ```sql
-  CREATE DATABASE modulo1y2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-  ```
-- Asegúrate de que el usuario y contraseña en `multi_tenant_modulo1y2/settings.py` sean correctos.
+El proyecto utiliza MySQL como base de datos. Asegúrate de tener MySQL instalado y configurado.
+
+**Configuración de la base de datos:**
+- **Base de datos:** `modulo1y2`
+- **Usuario:** `alee`
+- **Contraseña:** `1234`
+- **Host:** `localhost`
+- **Puerto:** `3306`
+
+**Crear la base de datos:**
+```sql
+CREATE DATABASE modulo1y2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
 ### 5. Aplicar migraciones
 ```sh
-python manage.py makemigrations
-python manage.py migrate
+python manage.py check
 ```
 
 ### 6. Crear usuario administrador
@@ -59,25 +66,62 @@ multi_modulo1y2/
 │   manage.py
 │   requirements.txt
 │
-└───multi_tenant_modulo1y2/
-    │   __init__.py
-    │   asgi.py
-    │   settings.py
-    │   urls.py
-    │   wsgi.py
+├───multi_modulo1y2/
+│   │   __init__.py
+│   │   asgi.py
+│   │   settings.py
+│   │   urls.py
+│   │   wsgi.py
+│   │   middleware.py
+│   │
+│   ├───auth_views/           # Gestión de autenticación
+│   │   │   __init__.py
+│   │   │   apps.py
+│   │   │   urls.py
+│   │   │   views.py
+│   │
+│   ├───clientes/             # Gestión de clientes
+│   │   │   __init__.py
+│   │   │   admin.py
+│   │   │   apps.py
+│   │   │   forms.py
+│   │   │   models.py
+│   │   │   tests.py
+│   │   │   urls.py
+│   │   │   views.py
+│   │
+│   ├───productos/            # Gestión de productos y tenants
+│   │   │   __init__.py
+│   │   │   admin.py
+│   │   │   apps.py
+│   │   │   forms.py
+│   │   │   models.py
+│   │   │   tests.py
+│   │   │   urls.py
+│   │   │   views.py
+│   │
+│   ├───templates/            # Plantillas HTML
+│   │   ├───base/
+│   │   └───login/
+│   │
+│   └───users/                # Gestión de usuarios
+│       │   __init__.py
+│       │   admin.py
+│       │   apps.py
+│       │   forms.py
+│       │   models.py
+│       │   tests.py
+│       │   urls.py
+│       │   views.py
 ```
 
 ---
 
 ## 📝 Notas
 
-- Revisa y ajusta los datos de conexión a MySQL en `settings.py`.
-- Si usas PyMySQL, asegúrate de agregar:
-  ```python
-  import pymysql
-  pymysql.install_as_MySQLdb()
-  ```
-  al inicio de tu `settings.py`.
+- El proyecto utiliza MySQL como base de datos para mayor robustez y escalabilidad.
+- El sistema implementa un modelo multi-tenant donde cada usuario pertenece a un tenant específico.
+- Los productos y clientes están aislados por tenant, asegurando que cada usuario solo pueda ver y gestionar los datos de su propio tenant.
 
 ---
 
@@ -91,6 +135,64 @@ multi_modulo1y2/
 ## 🛠️ Requerimientos
 
 Ver archivo `requirements.txt`.
+
+## 🔑 Funcionalidades
+
+### Sistema Multi-Tenant
+- Aislamiento de datos por tenant
+- Middleware para gestión de contexto de tenant
+- Filtrado automático de consultas por tenant
+
+### Gestión de Productos
+- Listado, creación, edición y eliminación de productos
+- Filtrado automático por tenant
+- Admin personalizado con filtrado por tenant
+
+### Gestión de Clientes
+- Listado, creación, edición y eliminación de clientes
+- Filtrado automático por tenant
+- Admin personalizado con filtrado por tenant
+
+### Gestión de Tenants (Clínicas)
+- Creación y gestión de clínicas
+- Admin personalizado con control de acceso
+
+### Autenticación
+- Login, logout y registro de usuarios
+- Asignación automática de tenant
+- Validación de acceso por tenant
+
+---
+
+## 🧪 Datos de Prueba
+
+El sistema incluye datos de prueba preconfigurados:
+
+### Clínicas (Tenants)
+- **Clínica A**: Dirección de Clínica A, Ciudad A
+- **Clínica B**: Dirección de Clínica B, Ciudad B
+
+### Usuarios de Prueba
+- **Clínica A**: 
+  - `admin_clinica_a` (Admin) - Contraseña: `test123`
+  - `vendedor_clinica_a` (Vendedor) - Contraseña: `test123`
+- **Clínica B**: 
+  - `admin_clinica_b` (Admin) - Contraseña: `test123`
+  - `vendedor_clinica_b` (Vendedor) - Contraseña: `test123`
+
+### Superusuario
+- **Usuario**: `admin`
+- **Contraseña**: `admin123`
+
+---
+
+## 🔒 Características de Seguridad
+
+- **Aislamiento total**: Cada tenant solo ve sus propios datos
+- **Validación de tenant**: Middleware verifica que el usuario tenga tenant asignado
+- **Prevención de cambio de tenant**: Los usuarios no pueden modificar su tenant
+- **Filtrado automático**: Todas las consultas se filtran por tenant automáticamente
+- **Control de acceso**: Solo superusuarios pueden ver todos los tenants
 
 ---
 

@@ -6,7 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'multi_tenant_modulo1y2.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'multi_modulo1y2.multi_tenant_modulo1y2.settings')
+    # Añadir la ruta del proyecto al path de Python
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'multi_modulo1y2'))
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
