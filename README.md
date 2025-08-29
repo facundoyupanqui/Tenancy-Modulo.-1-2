@@ -1,4 +1,4 @@
-# Tenancy Módulo 1 y 2
+# Tenancy Módulo 2
 
 Proyecto Django multi-tenant con base de datos MySQL. Sistema modular para gestión de productos y clientes con aislamiento por tenant.
 
